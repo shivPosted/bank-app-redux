@@ -1,11 +1,11 @@
 import Logo from "./Logo";
-import TopBalance from "./TopBalance";
+import TopBalanceBar from "./TopBalance";
 
 export default function Header() {
   return (
     <header>
       <Logo />
-      <TopBalance />
+      <TopBalanceBar />
     </header>
   );
 }
