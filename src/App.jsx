@@ -6,10 +6,12 @@ import AccountOps from "./features/accounts/AccountOps";
 import Greetings from "./components/Greetings";
 
 function App() {
+  const fullName = useSelector((state) => state.customer.fullName); //NOTE: accessing state using useSelector hook provided by redux
+
   return (
     <>
       <Header />
-      <NewCustomer />
+      {!fullName && <NewCustomer />}
       <Greetings />
       <AccountOps />
     </>

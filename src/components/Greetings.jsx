@@ -1,5 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 export default function Greetings() {
-  return <div className="greetings">👋 Welcome Name here</div>;
+  const name = useSelector((store) => store.customer.fullName);
+
+  return <div className="greetings">👋 Welcome {name}</div>;
 }
