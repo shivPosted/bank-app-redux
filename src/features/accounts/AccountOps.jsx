@@ -13,10 +13,12 @@ export default function AccountOps() {
 
   function handleDeposit() {
     dispatch(deposit(+depositAmount));
+    setDepositAmount("");
   }
 
   function handleWithdraw() {
     dispatch(withdraw(+withdrawAmount));
+    setWithdrawAmount("");
   }
   function handleLoanRequest() {
     dispatch(loanRequest(+loanAmount, loanPurpose));

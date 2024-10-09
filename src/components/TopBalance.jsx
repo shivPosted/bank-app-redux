@@ -1,7 +1,22 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
-export default function TopBalanceBar() {
-  const balance = useSelector((state) => state.account.balance);
-  return <div className="top-balance-bar">&#8377;{balance}</div>;
+function currencyFormatter(currency) {
+  return new Intl.NumberFormat("en", {
+    style: "currency",
+    currency: "INR",
+  }).format(currency);
 }
+import { connect, useSelector } from "react-redux";
+
+function TopBalanceBar({ balance }) {
+  // const balance = useSelector((state) => state.account.balance);
+  return <div className="top-balance-bar">{currencyFormatter(balance)}</div>;
+}
+
+function mapStateToProps(state) {
+  return {
+    balance: state.account.balance,
+  };
+}
+
+export default connect(mapStateToProps)(TopBalanceBar);
