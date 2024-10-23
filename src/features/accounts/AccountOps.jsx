@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { deposit, loanPay, loanRequest, withdraw } from "./accountSlice";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { closeLoan, deposit, requestLoan, withdraw } from "./accountSlice";
 
 export default function AccountOps() {
   const [depositAmount, setDepositAmount] = useState("");
@@ -8,23 +8,27 @@ export default function AccountOps() {
   const [loanAmount, setLoanAmount] = useState("");
   const [loanPurpose, setLoanPurpose] = useState("");
   const [currency, setCurrency] = useState("INR");
-
   const dispatch = useDispatch();
+  const { loan: currentLoan, loanPurpose: purpose } = useSelector(
+    (store) => store.account,
+  );
 
   function handleDeposit() {
-    dispatch(deposit(+depositAmount));
+    dispatch(deposit(+depositAmount, currency));
     setDepositAmount("");
   }
-
   function handleWithdraw() {
     dispatch(withdraw(+withdrawAmount));
     setWithdrawAmount("");
   }
-  function handleLoanRequest() {
-    dispatch(loanRequest(+loanAmount, loanPurpose));
+  function handleRequestLoan() {
+    if (!loanAmount || !loanPurpose) return;
+    dispatch(requestLoan(+loanAmount, loanPurpose));
+    setLoanAmount("");
+    setLoanPurpose("");
   }
-  function handleLoanClose() {
-    dispatch(loanPay());
+  function handleCloseLoan() {
+    dispatch(closeLoan());
   }
   return (
     <section className="account-ops-section">
@@ -32,7 +36,7 @@ export default function AccountOps() {
       <div className="deposit-section">
         <label htmlFor="deposit">Deposit</label>
         <input
-          type="text"
+          type="number"
           id="deposit"
           value={depositAmount}
           onChange={(e) => setDepositAmount(e.target.value)}
@@ -54,7 +58,7 @@ export default function AccountOps() {
       <div className="withdraw-section">
         <label htmlFor="withdraw">Withdraw</label>
         <input
-          type="text"
+          type="number"
           id="withdraw"
           value={withdrawAmount}
           onChange={(e) => setWithdrawAmount(e.target.value)}
@@ -65,7 +69,7 @@ export default function AccountOps() {
       </div>
       <div className="requestloan-section">
         <input
-          type="text"
+          type="number"
           placeholder="loan amount"
           id="loanAmount"
           value={loanAmount}
@@ -78,18 +82,16 @@ export default function AccountOps() {
           value={loanPurpose}
           onChange={(e) => setLoanPurpose(e.target.value)}
         />
-        <button
-          onClick={handleLoanRequest}
-          disabled={!loanAmount || !loanPurpose}
-        >
-          Request Loan {loanAmount}
-        </button>
+        <button onClick={handleRequestLoan}>Request Loan {loanAmount}</button>
       </div>
       <div className="payloan-section">
         <p>
-          Pay back: <span>{loanAmount}</span>
+          Pay back Loan:{" "}
+          <span>
+            {currentLoan}({purpose})
+          </span>
         </p>
-        <button onClick={handleLoanClose}>Pay Back</button>
+        <button onClick={handleCloseLoan}>Pay Back</button>
       </div>
     </section>
   );

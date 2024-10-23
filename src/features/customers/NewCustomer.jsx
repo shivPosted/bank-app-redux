@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createCustomer } from "./customerSlice";
+import { createNewCustomer } from "./customerSlice";
 
 export default function NewCustomer() {
   const [fullName, setFullName] = useState("");
   const [nationalID, setNationalID] = useState("");
-
-  const dispatch = useDispatch(); //NOTE: using useDispatch hook to access the dispatched can also use store.dispatch
+  const dispatch = useDispatch();
 
   function handleClick() {
-    if (!fullName || !nationalID) return;
-    dispatch(createCustomer(fullName, nationalID));
+    if (fullName && nationalID)
+      dispatch(createNewCustomer(fullName, nationalID));
   }
+
   return (
     <section className="new-customer-create">
       <h2>Create new Customer</h2>

@@ -1,4 +1,4 @@
-import React from "react";
+import { connect } from "react-redux";
 
 function currencyFormatter(currency) {
   return new Intl.NumberFormat("en", {
@@ -6,16 +6,21 @@ function currencyFormatter(currency) {
     currency: "INR",
   }).format(currency);
 }
-import { connect, useSelector } from "react-redux";
 
-function TopBalanceBar({ balance }) {
+function TopBalanceBar({ balance, isConverting }) {
   // const balance = useSelector((state) => state.account.balance);
-  return <div className="top-balance-bar">{currencyFormatter(balance)}</div>;
+  console.log(balance);
+  return (
+    <div className="top-balance-bar">
+      {isConverting ? "Converting..." : currencyFormatter(balance)}
+    </div>
+  );
 }
 
 function mapStateToProps(state) {
   return {
     balance: state.account.balance,
+    isConverting: state.account.isConverting,
   };
 }
 

@@ -1,19 +1,23 @@
-import { useSelector } from "react-redux";
 import Header from "./components/Header";
 import "./style.css";
-import NewCustomer from "./features/customers/NewCustomer";
-import AccountOps from "./features/accounts/AccountOps";
 import Greetings from "./components/Greetings";
+import AccountOps from "./features/accounts/AccountOps";
+import NewCustomer from "./features/customers/NewCustomer";
+import { useSelector } from "react-redux";
 
 function App() {
-  const fullName = useSelector((state) => state.customer.fullName); //NOTE: accessing state using useSelector hook provided by redux
-
+  const firstName = useSelector((store) => store.customer.firstName);
   return (
     <>
       <Header />
-      {!fullName && <NewCustomer />}
-      <Greetings />
-      <AccountOps />
+      {firstName ? (
+        <>
+          <Greetings />
+          <AccountOps />
+        </>
+      ) : (
+        <NewCustomer />
+      )}
     </>
   );
 }
