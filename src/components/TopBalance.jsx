@@ -7,20 +7,15 @@ function currencyFormatter(currency) {
   }).format(currency);
 }
 
-function TopBalanceBar({ balance, isConverting }) {
+function TopBalanceBar({ balance }) {
   // const balance = useSelector((state) => state.account.balance);
   console.log(balance);
-  return (
-    <div className="top-balance-bar">
-      {isConverting ? "converting..." : currencyFormatter(balance)}
-    </div>
-  );
+  return <div className="top-balance-bar">{currencyFormatter(balance)}</div>;
 }
 
 function mapStateToProps(state) {
   return {
     balance: state.account.balance,
-    isConverting: state.account.isConverting,
   };
 }
 

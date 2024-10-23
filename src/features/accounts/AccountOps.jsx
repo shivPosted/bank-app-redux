@@ -9,13 +9,16 @@ export default function AccountOps() {
   const [loanPurpose, setLoanPurpose] = useState("");
   const [currency, setCurrency] = useState("INR");
   const dispatch = useDispatch();
-  const { loan: currentLoan, loanPurpose: purpose } = useSelector(
-    (store) => store.account,
-  );
+  const {
+    loan: currentLoan,
+    loanPurpose: purpose,
+    isConverting,
+  } = useSelector((store) => store.account);
 
   function handleDeposit() {
     dispatch(deposit(+depositAmount, currency));
     setDepositAmount("");
+    setCurrency("INR");
   }
   function handleWithdraw() {
     dispatch(withdraw(+withdrawAmount));
@@ -52,7 +55,11 @@ export default function AccountOps() {
           <option value="EUR">Euro</option>
         </select>
         <button onClick={handleDeposit} disabled={!depositAmount}>
-          Deposit {depositAmount}
+          {isConverting
+            ? "converting..."
+            : `
+Deposit ${depositAmount}
+`}
         </button>
       </div>
       <div className="withdraw-section">
