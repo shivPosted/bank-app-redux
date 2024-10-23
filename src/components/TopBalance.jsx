@@ -12,7 +12,7 @@ function TopBalanceBar({ balance, isConverting }) {
   console.log(balance);
   return (
     <div className="top-balance-bar">
-      {isConverting ? "Converting..." : currencyFormatter(balance)}
+      {isConverting ? "converting..." : currencyFormatter(balance)}
     </div>
   );
 }

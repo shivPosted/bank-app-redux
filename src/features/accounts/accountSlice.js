@@ -61,7 +61,7 @@ function deposit(amount, currency) {
     const data = await res.json();
     const convertedRate = data.rates.INR;
     const finalAmount = amount * convertedRate;
-    return dispatch({ type: "account/deposit", payload: finalAmount });
+    dispatch({ type: "account/deposit", payload: finalAmount });
   };
 }
 
