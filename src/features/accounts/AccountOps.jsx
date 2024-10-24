@@ -9,6 +9,7 @@ export default function AccountOps() {
   const [loanPurpose, setLoanPurpose] = useState("");
   const [currency, setCurrency] = useState("INR");
   const dispatch = useDispatch();
+
   const {
     loan: currentLoan,
     loanPurpose: purpose,
@@ -16,23 +17,27 @@ export default function AccountOps() {
   } = useSelector((store) => store.account);
 
   function handleDeposit() {
-    dispatch(deposit(+depositAmount));
+    dispatch(deposit(+depositAmount, currency));
     setDepositAmount("");
     setCurrency("INR");
   }
+
   function handleWithdraw() {
     dispatch(withdraw(+withdrawAmount));
     setWithdrawAmount("");
   }
+
   function handleRequestLoan() {
     if (!loanAmount || !loanPurpose) return;
     dispatch(requestLoan(+loanAmount, loanPurpose));
     setLoanAmount("");
     setLoanPurpose("");
   }
+
   function handleCloseLoan() {
     dispatch(closeLoan());
   }
+
   return (
     <section className="account-ops-section">
       <h2>Your Account Operations</h2>
@@ -93,7 +98,7 @@ Deposit ${depositAmount}
       </div>
       <div className="payloan-section">
         <p>
-          Pay back Loan:{" "}
+          Pay back Loan:
           <span>
             {currentLoan}({purpose})
           </span>

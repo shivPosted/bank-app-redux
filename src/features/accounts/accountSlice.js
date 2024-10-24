@@ -13,6 +13,7 @@ const accountSlice = createSlice({
   reducers: {
     deposit(state, action) {
       state.balance += action.payload;
+      state.isConverting = false;
     },
     withdraw(state, action) {
       state.balance -= action.payload;
@@ -35,10 +36,35 @@ const accountSlice = createSlice({
       state.loan = 0;
       state.loanPurpose = null;
     },
+    convertingRates(state) {
+      state.isConverting = true;
+    },
   },
 });
 
+export function deposit(amount, currency) {
+  // NOTE: using deposit as custom function instead of RTK automated action creator deposit because we are using thunks as middleware to get data from external api or want to do some task before dispatching actions
+  if (currency === "INR")
+    return {
+      type: "account/deposit",
+      payload: amount,
+    };
+
+  return async function (dispatch, getState) {
+    dispatch({ type: "account/convertingRates" });
+
+    const res = await fetch(
+      `https://api.frankfurter.app/latest?base=${currency}&symbols=INR`,
+    );
+
+    const data = await res.json();
+    const convertedRate = data.rates.INR;
+    const finalAmount = amount * convertedRate;
+    dispatch({ type: "account/deposit", payload: finalAmount });
+  };
+}
+
 const { reducer: reducerAccount } = accountSlice;
 export default reducerAccount;
-export const { deposit, withdraw, requestLoan, closeLoan } =
-  accountSlice.actions;
+
+export const { withdraw, requestLoan, closeLoan } = accountSlice.actions;
