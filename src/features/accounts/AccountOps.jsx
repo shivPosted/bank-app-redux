@@ -16,7 +16,7 @@ export default function AccountOps() {
   } = useSelector((store) => store.account);
 
   function handleDeposit() {
-    dispatch(deposit(+depositAmount, currency));
+    dispatch(deposit(+depositAmount));
     setDepositAmount("");
     setCurrency("INR");
   }
@@ -98,7 +98,9 @@ Deposit ${depositAmount}
             {currentLoan}({purpose})
           </span>
         </p>
-        <button onClick={handleCloseLoan}>Pay Back</button>
+        <button onClick={handleCloseLoan} disabled={!currentLoan}>
+          Pay Back
+        </button>
       </div>
     </section>
   );

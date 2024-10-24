@@ -1,6 +1,6 @@
-import reducerCustomer from "./features/customers/customerSlice";
 import reducerAccount from "./features/accounts/accountSlice";
 import { configureStore } from "@reduxjs/toolkit";
+import reducerCustomer from "./features/customers/customerSlice-v1";
 
 const store = configureStore({
   reducer: {
